@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görev 4 - Liste Olusturma</title>
+
+    <style>
+        body {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .app-container {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 6px 0;
+            color: #6b7280;
+        }
+
+        .add-bar {
+            display: flex;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .add-bar input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+        }
+
+
+        .add-bar button {
+            width: 48px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #111827;
+            color: white;
+            font-size: 18px;
+        }
+
+        .list-container {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(250px, 1fr);
+            gap: 14px;
+        }
+
+        .list-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .list-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .list-header button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #ef4444;
+            color: white;
+            font-size: 18px;
+        }
+
+        .add-item-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .add-item-bar input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+        }
+
+
+        .add-item-bar button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #10b981;
+            color: white;
+            font-size: 18px;
+        }
+
+        .item-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .item-list li button {
+            border: none;
+            border-radius: 10px;
+            padding: 8px 10px;
+            cursor: pointer;
+            background: #374151;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <header>
+            <h1>Listify</h1>
+            <p>Liste olusturma Uygulamasi</p>
+        </header>
+
+        <div class="add-bar">
+            <input type="text" class="list-name" id="listName" placeholder="Liste adini giriniz" maxlength="50">
+            <button id="createListBtn">+</button>
+        </div>
+
+        <div class="list-container" id="listContainer">
+            <div class="list-box" id="listTemplate" style="display:none;">
+                <div class="list-header">
+                    <h2 class="list-title">Liste Adi</h2>
+                    <button class="delete-list">Liste sil</button>
+                </div>
+
+                <div class="add-item-bar">
+                    <input type="text" class="item-input" placeholder="Yeni öğe adi" maxlength="50">
+                    <button class="add-item-btn">Oge ekle</button>
+                </div>
+
+                <ul class="item-list"></ul>
+            </div>
+        </div>
+
+
+
+
+        <script>
+            const listInput = document.getElementById("listName");
+            const createListBtn = document.getElementById("createListBtn");
+            const listContainer = document.getElementById("listContainer");
+
+            createListBtn.addEventListener("click", function () {
+
+                const listName = listInput.value.trim();
+                if (listName === "") return;
+
+                const listBox = document.createElement("div");
+                listBox.className = "list-box";
+
+                const header = document.createElement("div");
+                header.className = "list-header";
+
+                const title = document.createElement("h2");
+                title.innerText = listName;
+
+                const deleteListBtn = document.createElement("button");
+                deleteListBtn.innerText = "-";
+
+                header.appendChild(title);
+                header.appendChild(deleteListBtn);
+
+                const addItemBar = document.createElement("div");
+                addItemBar.className = "add-item-bar";
+
+                const itemInput = document.createElement("input");
+                itemInput.type = "text";
+                itemInput.placeholder = "Yeni öğe";
+                itemInput.className = "item-input";
+                itemInput.maxLength = 50;
+
+                const addItemBtn = document.createElement("button");
+                addItemBtn.className = "add-item-btn";
+                addItemBtn.innerText = "+";
+
+                addItemBar.appendChild(itemInput);
+                addItemBar.appendChild(addItemBtn);
+
+                const ul = document.createElement("ul");
+                ul.className = "item-list";
+
+
+                listBox.appendChild(header);
+                listBox.appendChild(addItemBar);
+                listBox.appendChild(ul);
+
+                listContainer.appendChild(listBox);
+
+                listInput.value = "";
+
+                deleteListBtn.addEventListener("click", function () {
+                    listBox.remove();
+                });
+
+                addItemBtn.addEventListener("click", function () {
+
+                    const text = itemInput.value.trim();
+                    if (text === "") return;
+
+                    const li = document.createElement("li");
+                    li.innerText = text;
+
+                    const deleteItemBtn = document.createElement("button");
+                    deleteItemBtn.innerText = "Sil";
+
+                    li.appendChild(deleteItemBtn);
+                    ul.appendChild(li);
+
+                    itemInput.value = "";
+
+                    deleteItemBtn.addEventListener("click", function () {
+                        li.remove();
+                    });
+
+                });
+
+            });
+
+        </script>
+</body>
+
+</html>
